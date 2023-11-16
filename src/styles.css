@@ -1,0 +1,7 @@
+.contenedor {
+    background-color: grey; /* Fondo gris */
+    border: 1px solid black; /* Borde negro */
+    display: inline-block; /* Para que el div se ajuste al contenido */
+    padding: 10px; /* Añade espacio interno para mejorar la apariencia */
+
+}

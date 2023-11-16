@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';  
-
+import { obtenerDuenos, crearDueno, borrarDueno } from './servicios';
 
 const DuenoList = () => {
   const [duenos, setDuenos] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/dueno')
-      .then(response => setDuenos(response.data))
-      .catch(error => console.error('Error fetching duenos:', error));
+    obtenerDuenos()
+      .then(data => setDuenos(data))
+      .catch(error => console.error('Error al obtener la lista de dueños:', error));
   }, []);
 
   return (
@@ -37,9 +36,9 @@ const CrearDueno = () => {
       correo,
     };
 
-    axios.post('http://localhost:8080/api/dueno', duenoData)
+    crearDueno(duenoData)
       .then(response => {
-        console.log('Dueño creado:', response.data);
+        console.log('Dueño creado:', response);
         // Puedes realizar alguna acción adicional después de crear el dueño
       })
       .catch(error => console.error('Error al crear el dueño:', error));
@@ -61,12 +60,12 @@ const CrearDueno = () => {
   );
 }
 
-const BorrarDueno = ({ id }) => {
+const BorrarDueno = ({ id, onDelete }) => {
   const handleDelete = () => {
-    axios.delete(`http://localhost:8080/api/dueno/${id}`)
+    borrarDueno(id)
       .then(response => {
-        console.log('Dueño eliminado:', response.data);
-        // Puedes realizar alguna acción adicional después de eliminar el dueño
+        console.log('Dueño eliminado:', response);
+        onDelete(); // Llama a la función onDelete proporcionada como prop
       })
       .catch(error => console.error('Error al borrar el dueño:', error));
   };
