@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';  
 
+
 const DuenoList = () => {
   const [duenos, setDuenos] = useState([]);
 
@@ -11,7 +12,7 @@ const DuenoList = () => {
   }, []);
 
   return (
-    <div>
+    <div className='contenedor'>
       <h2>Lista de Dueños</h2>
       <ul>
         {duenos.map(dueno => (
@@ -45,7 +46,7 @@ const CrearDueno = () => {
   };
 
   return (
-    <div>
+    <div className='contenedor'>
       <h2>Crear Dueño</h2>
       <label>Nombre: </label>
       <input type="text" value={nombre} onChange={e => setNombre(e.target.value)} /><br />
@@ -71,7 +72,7 @@ const BorrarDueno = ({ id }) => {
   };
 
   return (
-    <div>
+    <div className='contenedor'>
       <h2>Borrar Dueño</h2>
       <button onClick={handleDelete}>Borrar Dueño</button>
     </div>

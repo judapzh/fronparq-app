@@ -1,46 +1,34 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default function NavBar() {
+const Navbar = () => {
   return (
-    <header className="d-flex justify-content-center py-3">
-      <ul className="nav nav-pills">
-        <NavLink 
-            tabIndex={1}
-            className='nav-item nav-link'
-            to='/'
-        >
-            Estancia
-        </NavLink>
-        <NavLink 
-            tabIndex={2}
-            className='nav-item nav-link'
-            to='/propietarios'
-        >
-            Propietarios
-        </NavLink>
-        <NavLink 
-            tabIndex={3}
-            className='nav-item nav-link'
-            to='/tipoVehiculos'
-        >
-            Tipo Vehiculo
-        </NavLink>
-        <NavLink 
-            tabIndex={4}
-            className='nav-item nav-link'
-            to='/marcas'
-        >
-            Marcas
-        </NavLink>
-        <NavLink 
-            tabIndex={5}
-            className='nav-item nav-link'
-            to='/Empleados'
-        >
-           Empleados
-        </NavLink>
-      </ul>
-    </header>
-  )
-}
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <Link className="navbar-brand" to="/">Tu Aplicación</Link>
+      <div className="collapse navbar-collapse" id="navbarNav">
+        <ul className="navbar-nav">
+          <li className="nav-item">
+            <Link className="nav-link" to="/duenos">Dueños</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/estancias">Estancias</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/marcas">Marcas</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/tipos-vehiculo">Tipos de Vehículo</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/empleados">Empleados</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/vehiculos">Vehículos</Link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

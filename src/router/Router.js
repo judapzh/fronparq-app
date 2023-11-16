@@ -1,18 +1,22 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { DuenoList, CrearDueno, BorrarDueno } from '../services/Dueno';
 import { EstanciaList, CrearEstancia, GenerarSalidaEstancia, BorrarEstancia } from '../services/Estancias';
 import { MarcaList, CrearMarca, BorrarMarca } from '../services/Marcas';
 import { TipoVehiculoList, CrearTipoVehiculo, BorrarTipoVehiculo } from '../services/TipoVehiculos';
 import { EmpleadoList, CrearEmpleado, BorrarEmpleado } from '../services/Empleado';
 import { CrearVehiculo, VehiculoList, BorrarVehiculo } from '../services/vehiculos';
+import Navbar from '../components/NavBar';
+import NotFound from '../components/NotFound'
 
 const AppRouter = () => {
   return (
     <Router>
-      <Switch>
-        {/* Rutas para el componente Dueno */}
-        <Route path="/duenos" exact component={DuenoList} />
+      <div className='container'>
+        <Navbar />
+        <Routes>
+          
+          <Route path="/duenos" exact component={DuenoList} />
         <Route path="/crear-dueno" exact component={CrearDueno} />
         <Route path="/borrar-dueno/:id" exact component={BorrarDueno} />
     
@@ -46,10 +50,10 @@ const AppRouter = () => {
         <Route path="/vehiculos" exact component={VehiculoList} />
         <Route path="/crear-vehiculo" exact component={CrearVehiculo} />
         <Route path="/borrar-vehiculo/:id" exact component={BorrarVehiculo} />
-      </Switch>
-     
+        <Route path='*' element={<NotFound />}/>
+        </Routes>
+      </div>
     </Router>
   );
-}
-
+};
 export default AppRouter;
