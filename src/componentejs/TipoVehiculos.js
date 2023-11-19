@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import tipovehiculoServer from '../servicios/tiposerver';
 
-const MarcaList = () => {
-  const [marcas, setMarcas] = useState([]);
+const TipoVehiculoList = () => {
+  const [tiposVehiculo, setTiposVehiculo] = useState([]);
 
   useEffect(() => {
-    listarMarca();
+    listarTipoVehiculo();
   }, []);
 
-  const listarMarca = () => {
-    MarcaServer.getAllMarcas()
+  const listarTipoVehiculo = () => {
+    tipovehiculoServer.getAllTiposVehiculo()
       .then(response => {
-        setMarcas(response.data);
+        setTiposVehiculo(response.data);
         console.log(response.data);
       })
       .catch(error => {
@@ -20,10 +20,10 @@ const MarcaList = () => {
       });
   };
 
-  const deleteMarca = (marcaId) => {
-    MarcaServer.deleteMarca(marcaId)
+  const deleteTipoVehiculo = (tipoVehiculoId) => {
+    tipovehiculoServer.deleteTipoVehiculo(tipoVehiculoId)
       .then(() => {
-        listarMarca();
+        listarTipoVehiculo();
       })
       .catch(error => {
         console.log(error);
@@ -32,9 +32,9 @@ const MarcaList = () => {
 
   return (
     <div className='container'>
-      <h2 className='text-center'>Lista de Marcas</h2>
-      <Link to='crearMarca' className='btn btn-primary mb-2'>
-        Agregar una marca
+      <h2 className='text-center'>Lista de Tipos de Vehículo</h2>
+      <Link to='crearTipoVehiculo' className='btn btn-primary mb-2'>
+        Agregar un tipo de vehículo
       </Link>
       <table className='table table-bordered table-striped'>
         <thead>
@@ -45,18 +45,18 @@ const MarcaList = () => {
           </tr>
         </thead>
         <tbody>
-          {marcas.map((marca) => (
-            <tr key={marca.id}>
-              <td>{marca.id}</td>
-              <td>{marca.nombre}</td>
+          {tiposVehiculo.map((tipoVehiculo) => (
+            <tr key={tipoVehiculo.id}>
+              <td>{tipoVehiculo.id}</td>
+              <td>{tipoVehiculo.tipo}</td>
               <td>
-                <Link className='btn btn-info' to={`/editar-marca/${marca.id}`}>
+                <Link className='btn btn-info' to={`/editar-tipo-vehiculo/${tipoVehiculo.id}`}>
                   Actualizar
                 </Link>
                 <button
                   style={{ marginLeft: '10px' }}
                   className='btn btn-danger'
-                  onClick={() => deleteMarca(marca.id)}
+                  onClick={() => deleteTipoVehiculo(tipoVehiculo.id)}
                 >
                   Eliminar
                 </button>
@@ -69,7 +69,7 @@ const MarcaList = () => {
   );
 };
 
-const CrearMarca = () => {
+const CrearTipoVehiculo = () => {
   const [nombre, setNombre] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
@@ -77,7 +77,7 @@ const CrearMarca = () => {
   useEffect(() => {
     if (id) {
       // Fetch the data for the given ID and populate the form fields
-      MarcaServer.getMarcaById(id)
+      tipovehiculoServer.getTipoVehiculoById(id)
         .then(response => {
           const data = response.data;
           setNombre(data.nombre);
@@ -88,24 +88,24 @@ const CrearMarca = () => {
     }
   }, [id]);
 
-  const saveMarca = (e) => {
+  const saveTipoVehiculo = (e) => {
     e.preventDefault();
-    const marca = { nombre };
+    const tipoVehiculo = { nombre };
 
     if (id) {
-      MarcaServer.updateMarca(id, marca)
+      tipovehiculoServer.updateTipoVehiculo(id, tipoVehiculo)
         .then(() => {
-          console.log('Marca updated successfully');
-          navigate('/marcas');
+          console.log('Tipo de vehículo actualizado exitosamente');
+          navigate('/tipos-vehiculo');
         })
         .catch(error => {
           console.log(error);
         });
     } else {
-      MarcaServer.createMarca(marca)
+      tipovehiculoServer.createTipoVehiculo(tipoVehiculo)
         .then(() => {
-          console.log('Marca created successfully');
-          navigate('/marcas');
+          console.log('Tipo de vehículo creado exitosamente');
+          navigate('/tipos-vehiculo');
         })
         .catch(error => {
           console.log(error);
@@ -115,9 +115,9 @@ const CrearMarca = () => {
 
   const title = () => {
     if (id) {
-      return <h2 className='text-center'>Actualizar marca</h2>;
+      return <h2 className='text-center'>Actualizar tipo de vehículo</h2>;
     } else {
-      return <h2 className='text-center'>Agregar marca</h2>;
+      return <h2 className='text-center'>Agregar tipo de vehículo</h2>;
     }
   };
 
@@ -130,9 +130,9 @@ const CrearMarca = () => {
             <div className='form-group-md-2'>
               <label>Nombre: </label>
               <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} /><br />
-              <button className='btn btn-success' onClick={(e) => saveMarca(e)}>Crear Marca</button>
+              <button className='btn btn-success' onClick={(e) => saveTipoVehiculo(e)}>Crear Tipo de Vehículo</button>
               &nbsp;&nbsp;
-              <Link to='/marcas' className='btn btn-danger'>Cancelar</Link>
+              <Link to='/tipos-vehiculo' className='btn btn-danger'>Cancelar</Link>
             </div>
           </form>
         </div>
@@ -141,4 +141,4 @@ const CrearMarca = () => {
   );
 };
 
-export { MarcaList, CrearMarca };
+export { TipoVehiculoList, CrearTipoVehiculo };
