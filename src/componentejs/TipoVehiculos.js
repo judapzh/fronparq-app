@@ -1,75 +1,144 @@
-
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import tipovehiculoServer from '../servicios/tiposerver';
 
-const TipoVehiculoList = () => {
-  const [tipos, setTipos] = useState([]);
+const MarcaList = () => {
+  const [marcas, setMarcas] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/tvehiculo')
-      .then(response => setTipos(response.data))
-      .catch(error => console.error('Error fetching tipos de vehículos:', error));
+    listarMarca();
   }, []);
 
-  return (
-    <div>
-      <h2>Lista de Tipos de Vehículos</h2>
-      <ul>
-        {tipos.map(tipo => (
-          <li key={tipo.id}>{tipo.tipo}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-
-
-
-const CrearTipoVehiculo = () => {
-  const [tipo, setTipo] = useState('');
-
-  const handleSubmit = () => {
-    axios.post('http://localhost:8080/api/tvehiculo', { tipo })
+  const listarMarca = () => {
+    MarcaServer.getAllMarcas()
       .then(response => {
-        console.log('Tipo de vehículo creado:', response.data);
-        // Puedes realizar alguna acción adicional después de crear el tipo de vehículo
+        setMarcas(response.data);
+        console.log(response.data);
       })
-      .catch(error => console.error('Error al crear el tipo de vehículo:', error));
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const deleteMarca = (marcaId) => {
+    MarcaServer.deleteMarca(marcaId)
+      .then(() => {
+        listarMarca();
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
-    <div>
-      <h2>Crear Tipo de Vehículo</h2>
-      <label>Tipo: </label>
-      <input type="text" value={tipo} onChange={e => setTipo(e.target.value)} />
-      <button onClick={handleSubmit}>Crear Tipo de Vehículo</button>
+    <div className='container'>
+      <h2 className='text-center'>Lista de Marcas</h2>
+      <Link to='crearMarca' className='btn btn-primary mb-2'>
+        Agregar una marca
+      </Link>
+      <table className='table table-bordered table-striped'>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {marcas.map((marca) => (
+            <tr key={marca.id}>
+              <td>{marca.id}</td>
+              <td>{marca.nombre}</td>
+              <td>
+                <Link className='btn btn-info' to={`/editar-marca/${marca.id}`}>
+                  Actualizar
+                </Link>
+                <button
+                  style={{ marginLeft: '10px' }}
+                  className='btn btn-danger'
+                  onClick={() => deleteMarca(marca.id)}
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
+const CrearMarca = () => {
+  const [nombre, setNombre] = useState('');
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-const BorrarTipoVehiculo = ({ id }) => {
-  const handleDelete = () => {
-    axios.delete(`http://localhost:8080/api/tvehiculo/${id}`)
-      .then(response => {
-        console.log('Tipo de vehículo eliminado:', response.data);
-        // Puedes realizar alguna acción adicional después de eliminar el tipo de vehículo
-      })
-      .catch(error => console.error('Error al borrar el tipo de vehículo:', error));
+  useEffect(() => {
+    if (id) {
+      // Fetch the data for the given ID and populate the form fields
+      MarcaServer.getMarcaById(id)
+        .then(response => {
+          const data = response.data;
+          setNombre(data.nombre);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }, [id]);
+
+  const saveMarca = (e) => {
+    e.preventDefault();
+    const marca = { nombre };
+
+    if (id) {
+      MarcaServer.updateMarca(id, marca)
+        .then(() => {
+          console.log('Marca updated successfully');
+          navigate('/marcas');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      MarcaServer.createMarca(marca)
+        .then(() => {
+          console.log('Marca created successfully');
+          navigate('/marcas');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
+
+  const title = () => {
+    if (id) {
+      return <h2 className='text-center'>Actualizar marca</h2>;
+    } else {
+      return <h2 className='text-center'>Agregar marca</h2>;
+    }
   };
 
   return (
-    <div>
-      <h2>Borrar Tipo de Vehículo</h2>
-      <button onClick={handleDelete}>Borrar Tipo de Vehículo</button>
+    <div className='container'>
+      <div className='card col-md-6 offset-md-3 offset-md-3'>
+        {title()}
+        <div className='card-body'>
+          <form>
+            <div className='form-group-md-2'>
+              <label>Nombre: </label>
+              <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} /><br />
+              <button className='btn btn-success' onClick={(e) => saveMarca(e)}>Crear Marca</button>
+              &nbsp;&nbsp;
+              <Link to='/marcas' className='btn btn-danger'>Cancelar</Link>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
-
-export {
-    TipoVehiculoList,
-    CrearTipoVehiculo,
-    BorrarTipoVehiculo
-}
+export { MarcaList, CrearMarca };

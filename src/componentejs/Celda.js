@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import MarcaServer from '../servicios/marcaserver';
+import CeldaServer from '../servicios/celdaserver';
 
-const MarcaList = () => {
-  const [marcas, setMarcas] = useState([]);
+const CeldaList = () => {
+  const [celdas, setCeldas] = useState([]);
 
   useEffect(() => {
-    listarMarca();
+    listarCelda();
   }, []);
 
-  const listarMarca = () => {
-    MarcaServer.getAllMarcas()
+  const listarCelda = () => {
+    CeldaServer.getAllCeldas()
       .then(response => {
-        setMarcas(response.data);
+        setCeldas(response.data);
         console.log(response.data);
       })
       .catch(error => {
@@ -20,10 +20,10 @@ const MarcaList = () => {
       });
   };
 
-  const deleteMarca = (marcaId) => {
-    MarcaServer.deleteMarca(marcaId)
+  const deleteCelda = (celdaId) => {
+    CeldaServer.deleteCelda(celdaId)
       .then(() => {
-        listarMarca();
+        listarCelda();
       })
       .catch(error => {
         console.log(error);
@@ -32,31 +32,33 @@ const MarcaList = () => {
 
   return (
     <div className='container'>
-      <h2 className='text-center'>Lista de Marcas</h2>
-      <Link to='crearMarca' className='btn btn-primary mb-2'>
-        Agregar una marca
+      <h2 className='text-center'>Lista de Celdas</h2>
+      <Link to='crearCelda' className='btn btn-primary mb-2'>
+        Agregar una celda
       </Link>
       <table className='table table-bordered table-striped'>
         <thead>
           <tr>
             <th>Id</th>
             <th>Nombre</th>
+            <th>Ocupada</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {marcas.map((marca) => (
-            <tr key={marca.id}>
-              <td>{marca.id}</td>
-              <td>{marca.nombre}</td>
+          {celdas.map((celda) => (
+            <tr key={celda.id}>
+              <td>{celda.id}</td>
+              <td>{celda.nombre}</td>
+              <td>{celda.ocupada}</td>
               <td>
-                <Link className='btn btn-info' to={`/editar-marca/${marca.id}`}>
+                <Link className='btn btn-info' to={`/editar-celda/${celda.id}`}>
                   Actualizar
                 </Link>
                 <button
                   style={{ marginLeft: '10px' }}
                   className='btn btn-danger'
-                  onClick={() => deleteMarca(marca.id)}
+                  onClick={() => deleteCelda(celda.id)}
                 >
                   Eliminar
                 </button>
@@ -69,18 +71,20 @@ const MarcaList = () => {
   );
 };
 
-const CrearMarca = () => {
+const CrearCelda = () => {
   const [nombre, setNombre] = useState('');
+  const [ocupada, setOcupada] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     if (id) {
-      // Fetch the data for the given ID and populate the form fields
-      MarcaServer.getMarcaById(id)
+      
+      CeldaServer.getCeldaById(id)
         .then(response => {
           const data = response.data;
           setNombre(data.nombre);
+          setOcupada(data.ocupada);
         })
         .catch(error => {
           console.log(error);
@@ -88,24 +92,24 @@ const CrearMarca = () => {
     }
   }, [id]);
 
-  const saveMarca = (e) => {
+  const saveCelda = (e) => {
     e.preventDefault();
-    const marca = { nombre };
+    const celda = { nombre, ocupada };
 
     if (id) {
-      MarcaServer.updateMarca(id, marca)
+      CeldaServer.updateCelda(id, celda)
         .then(() => {
-          console.log('Marca updated successfully');
-          navigate('/marcas');
+          console.log('Celda updated successfully');
+          navigate('/celdas');
         })
         .catch(error => {
           console.log(error);
         });
     } else {
-      MarcaServer.createMarca(marca)
+      CeldaServer.createCelda(celda)
         .then(() => {
-          console.log('Marca created successfully');
-          navigate('/marcas');
+          console.log('Celda created successfully');
+          navigate('/celdas');
         })
         .catch(error => {
           console.log(error);
@@ -115,9 +119,9 @@ const CrearMarca = () => {
 
   const title = () => {
     if (id) {
-      return <h2 className='text-center'>Actualizar marca</h2>;
+      return <h2 className='text-center'>Actualizar celda</h2>;
     } else {
-      return <h2 className='text-center'>Agregar marca</h2>;
+      return <h2 className='text-center'>Agregar celda</h2>;
     }
   };
 
@@ -130,9 +134,11 @@ const CrearMarca = () => {
             <div className='form-group-md-2'>
               <label>Nombre: </label>
               <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} /><br />
-              <button className='btn btn-success' onClick={(e) => saveMarca(e)}>Crear Marca</button>
+              <label>Ocupada: </label>
+              <input type="text" value={ocupada} onChange={(e) => setOcupada(e.target.value)} /><br />
+              <button className='btn btn-success' onClick={(e) => saveCelda(e)}>Crear Celda</button>
               &nbsp;&nbsp;
-              <Link to='/marcas' className='btn btn-danger'>Cancelar</Link>
+              <Link to='/celdas' className='btn btn-danger'>Cancelar</Link>
             </div>
           </form>
         </div>
@@ -141,4 +147,4 @@ const CrearMarca = () => {
   );
 };
 
-export { MarcaList, CrearMarca };
+export { CeldaList, CrearCelda };

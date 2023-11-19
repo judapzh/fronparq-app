@@ -1,67 +1,73 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
-import { DuenoList, CrearDueno, BorrarDueno } from '../componentes/Dueno';
-import { EstanciaList, CrearEstancia, GenerarSalidaEstancia, BorrarEstancia } from '../componentes/Estancias';
-import { MarcaList, CrearMarca, BorrarMarca } from '../componentes/Marcas';
-import { TipoVehiculoList, CrearTipoVehiculo, BorrarTipoVehiculo } from '../componentes/TipoVehiculos';
-import { EmpleadoList, CrearEmpleado, BorrarEmpleado } from '../componentes/Empleado';
-import { CrearVehiculo, VehiculoList, BorrarVehiculo } from '../componentes/vehiculos';
+import { DuenoList, CrearDueno } from '../componentejs/Dueno';
+import { EstanciaList, CrearEstancia } from '../componentejs/Estancias';
+import { MarcaList, CrearMarca } from '../componentejs/Marcas';
+import { TipoVehiculoList, CrearTipoVehiculo } from '../componentejs/TipoVehiculos';
+import { EmpleadoList, CrearEmpleado } from '../componentejs/Empleado';
+import { CrearVehiculo, VehiculoList } from '../componentejs/vehiculos';
+import { PagoList, CrearPago } from '../componentejs/Pago';  
+import { CeldaList, CrearCelda } from '../componentejs/Celda';
 import HeaderComconent from '../components/HeaderComponent';
-import NotFound from '../components/NotFound'
+import NotFound from '../components/NotFound';
+import Footer from '../components/footer';
 
 const AppRouter = () => {
   return (
-    <div >
+    <div>
       <BrowserRouter>
-      <HeaderComconent/>
+        <HeaderComconent />
         <div className='container'>
-         <Router>
-  
-        <Routes>
-          
-        
-          <Route path="/duenos" exact component={DuenoList} />
-        <Route path="/crear-dueno" exact component={CrearDueno} />
-          <Route path="/editar-dueno/" exact component={CrearDueno} />
-      
-    
+          <Router>
+            <Routes>
+              {/* Rutas para el componente celdas */}
+              <Route path="/celdas" element={<CeldaList />} />
+              <Route path="/crear-celda" element={<CrearCelda />} />
+              <Route path="/editar-celda/:id" element={<CrearCelda />} />
 
-         {/* Rutas para el componente Estancia */}
-        <Route path="/estancias" exact component={EstanciaList} />
-        <Route path="/crear-estancia" exact component={CrearEstancia} />
-        <Route path="/generar-salida/:id" exact component={GenerarSalidaEstancia} />
-        <Route path="/borrar-estancia/:id" exact component={BorrarEstancia} />
-   
+              {/* Rutas para el componente dueño*/}
+              <Route path="/duenos" element={<DuenoList />} />
+              <Route path="/crear-dueno" element={<CrearDueno />} />
+              <Route path="/editar-dueno/:id" element={<CrearDueno />} />
 
-        {/* Rutas para el componente Marca */}
-        <Route path="/marcas" exact component={MarcaList} />
-        <Route path="/crear-marca" exact component={CrearMarca} />
-        <Route path="/borrar-marca/:id" exact component={BorrarMarca} />
-    
+              {/* Rutas para el componente Estancia */}
+              <Route path="/estancias" element={<EstanciaList />} />
+              <Route path="/crear-estancia" element={<CrearEstancia />} />
+              <Route path="/generar-salida/:id" element={<CrearEstancia />} />
 
-          {/* Rutas para el componente TipoVehiculo */}
-        <Route path="/tipos-vehiculo" exact component={TipoVehiculoList} />
-        <Route path="/crear-tipo-vehiculo" exact component={CrearTipoVehiculo} />
-        <Route path="/borrar-tipo-vehiculo/:id" exact component={BorrarTipoVehiculo} />
-    
+              {/* Rutas para el componente Marca */}
+              <Route path="/marcas" element={<MarcaList />} />
+              <Route path="/crear-marca" element={<CrearMarca />} />
+              <Route path="/editar-marca/:id" element={<CrearMarca />} />
 
-           {/* Rutas para el componente Empleado */}
-        <Route path="/empleados" exact component={EmpleadoList} />
-        <Route path="/crear-empleado" exact component={CrearEmpleado} />
-        <Route path="/borrar-empleado/:id" exact component={BorrarEmpleado} />
-    
+              {/* Rutas para el componente TipoVehiculo */}
+              <Route path="/tipos-vehiculo" element={<TipoVehiculoList />} />
+              <Route path="/crear-tipo-vehiculo" element={<CrearTipoVehiculo />} />
+              <Route path="/editar-tipo-vehiculo/:id" element={<CrearTipoVehiculo />} />
 
-          {/* Rutas para el componente Vehiculo */}
-        <Route path="/vehiculos" exact component={VehiculoList} />
-        <Route path="/crear-vehiculo" exact component={CrearVehiculo} />
-        <Route path="/borrar-vehiculo/:id" exact component={BorrarVehiculo} />
-        <Route path='*' element={<NotFound />}/>
-        </Routes>
-     
-    </Router>
-    </div>
-    </BrowserRouter>
+              {/* Rutas para el componente Empleado */}
+              <Route path="/empleados" element={<EmpleadoList />} />
+              <Route path="/crear-empleado" element={<CrearEmpleado />} />
+              <Route path="/editar-empleado/:id" element={<CrearEmpleado />} />
+
+              {/* Rutas para el componente Vehiculo */}
+              <Route path="/vehiculos" element={<VehiculoList />} />
+              <Route path="/crear-vehiculo" element={<CrearVehiculo />} />
+              <Route path="/editar-vehiculo/:id" element={<CrearVehiculo />} />
+
+              {/* Rutas para el componente Pagos */}
+              <Route path="/pagos" element={<PagoList />} />
+              <Route path="/crear-pago" element={<CrearPago />} />
+              <Route path="/editar-pago/:id" element={<CrearPago />} />
+
+              <Route path='*' element={<NotFound />} />
+            </Routes>
+          </Router>
+        </div>
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 };
+
 export default AppRouter;
