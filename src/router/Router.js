@@ -15,7 +15,6 @@ import Footer from '../components/footer';
 const AppRouter = () => {
   return (
     <div>
-      <BrowserRouter>
         <HeaderComconent />
         <div className='container'>
           <Router>
@@ -65,7 +64,6 @@ const AppRouter = () => {
           </Router>
         </div>
         <Footer />
-      </BrowserRouter>
     </div>
   );
 };
