@@ -7,6 +7,10 @@ export const HeaderComconent = () => {
             <nav className="navbar navbar-expand-md navbar-dark dg-darh">
                  <div>
                  <a href="/"className="navbar-brand">Estancias</a>
+                </div>
+            </nav>
+            <nav className="navbar navbar-expand-md navbar-dark dg-darh">
+                 <div>
                  <a href="/duenos"className="navbar-brand">gestion dueños</a>
                  <a href="/marcas"className="navbar-brand">gestion Marcas</a>
                  <a href="/tipos-vehiculo"className="navbar-brand">gestion tipo vehiculo</a>

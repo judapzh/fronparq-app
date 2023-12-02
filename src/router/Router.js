@@ -10,11 +10,13 @@ import { PagoList, CrearPago } from '../componentejs/Pago';
 import { CeldaList, CrearCelda } from '../componentejs/Celda';
 import HeaderComconent from '../components/HeaderComponent';
 import NotFound from '../components/NotFound';
+
 import Footer from '../components/footer';
 
 const AppRouter = () => {
   return (
     <div>
+    
       <HeaderComconent />
       <div className='container'>
         <Routes>
