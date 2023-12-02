@@ -29,7 +29,6 @@ const AppRouter = () => {
           <Route path="/editar-dueno/:id" element={<CrearDueno />} />
 
           {/* Rutas para el componente Estancia */}
-          <Route path="/" element={<EstanciaList />} />
           <Route path="/estancias" element={<EstanciaList />} />
           <Route path="/crear-estancia" element={<CrearEstancia />} />
           <Route path="/generar-salida/:id" element={<CrearEstancia />} />
@@ -68,5 +67,3 @@ const AppRouter = () => {
 };
 
 export default AppRouter;
-
-
